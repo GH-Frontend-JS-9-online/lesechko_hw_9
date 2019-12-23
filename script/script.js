@@ -1,24 +1,34 @@
 let $startKitty = document.querySelector('.startKitty')
 let $startPag = document.querySelector('.startPag')
+let $startNinja = document.querySelector('.startNinja')
+
 
 let $fotoCat = document.querySelector('.fa-cat')
 let $fotoDog = document.querySelector('.fa-dog')
+let $fotoNinja = document.querySelector('.fa-user-ninja')
 
 let $eatBtn = document.querySelector('.eatButton')
 let $runBtn = document.querySelector('.runButton')
 let $washBtn = document.querySelector('.washButton')
+let $doctorBtn = document.querySelector('.doctorButton')
+let $barBtn = document.querySelector('.barButton')
+let $workBtn = document.querySelector('.workButton')
+let $shopBtn = document.querySelector('.shopButton')
+let $businessBtn = document.querySelector('.businessButton')
+
 let $bars = document.querySelectorAll('.bars__progres');
 let $point = document.querySelector('.pointTittle')
+let $barsMain = document.querySelector('.bars')
 
 
+const startKitty = () => Math.round(50 + Math.random() * 50)
+const startPug = () => Math.round(50 + Math.random() * 20)
 
 class Tamagochi {
-    constructor(food, clean, hapiness) {
-        this.food = food;
-        this.clean = clean;
-        this.hapiness = hapiness;
+    constructor() {
         this.point = 0;
         this.paddingLeft = 0;
+        this.paddingTop = 5;
         this.moveBars()
     }
 
@@ -39,27 +49,83 @@ class Tamagochi {
         this.hapiness += 15;
         this.food -= 10;
         this.moveBars()
+
+    }
+
+    goDoctor() {
+        this.health += 30;
+        this.money -= 20;
+        this.moveBars()
+    }
+
+
+    goBar() {
+        this.socialization += 40;
+        this.food += 10
+        this.money -= 20
+        this.health -= 10
+        this.moveBars()
+    }
+
+    goWork() {
+        this.money += 50;
+        this.food -= 10;
+        this.health -= 10;
+        this.socialization -= 20;
+        this.moveBars()
+    }
+
+    byFood() {
+        this.food += 20
+        this.money -= 20;
+        this.moveBars()
+    }
+
+    startBusiness() {
+        this.money += 100;
+        this.health -= 100;
+        this.hapiness += 100;
+        this.socialization += 20;
+        this.moveBars()
     }
 
     moveBars() {
-        let barsItem = [this.food, this.clean, this.hapiness]
+        this.barsItem = [this.food, this.clean, this.hapiness, this.health, this.socialization, this.money]
 
         $bars.forEach((el, i) => {
-            if (barsItem[i] <= 1) {
+            if (this.barsItem[i] <= 1) {
                 this.gameOver()
             }
-            el.style.width = barsItem[i] + '%'
+            if (this.barsItem[i] > 70) {
+                el.style.backgroundColor = 'green'
+            }
+            if (this.barsItem[i] < 70) {
+                el.style.backgroundColor = 'rgba(238, 209, 32, 0.9)'
+            }
+            if (this.barsItem[i] < 30) {
+                el.style.backgroundColor = 'rgb(212,0,0)'
+            }
+            el.style.width = this.barsItem[i] + '%'
         })
     }
 
-    setInt(point) {
+    setInt(point, time) {
         setInterval(() => {
             this.food -= point;
             this.clean -= point;
             this.hapiness -= point;
+            this.health -= point;
+            this.socialization -= point;
+            this.money -= point;
             this.moveBars()
-            this.setPoint()
-        }, 5000)
+        }, time * 1000)
+    }
+
+    setHelpInterval() {
+        setInterval(() => {
+            /// Написать код
+            this.moveBars()
+        }, 60000)
     }
 
     displayNone() {
@@ -68,7 +134,7 @@ class Tamagochi {
     }
 
     displayHeroes(tag) {
-        tag.style.fontSize = '40px'
+        tag.style.fontSize = '65px'
     }
 
     gameOver() {
@@ -86,8 +152,14 @@ class Tamagochi {
             if (this.paddingLeft > 160) {
                 this.paddingLeft = 0;
             }
+            if (this.paddingTop > 45) {
+                this.paddingTop = 5;
+            }
             tag.style.paddingLeft = this.paddingLeft + 'px'
+            tag.style.paddingTop = this.paddingTop + 'px'
             this.paddingLeft += 40
+            this.paddingTop += 40
+            this.setPoint()
         }, 2000)
     }
 
@@ -95,14 +167,18 @@ class Tamagochi {
 
 
 class LazyPug extends Tamagochi {
-    constructor(food, clean, hapiness) {
+    constructor(fn) {
         super()
-        this.food = food;
-        this.clean = clean;
-        this.hapiness = hapiness;
+        this.food = fn();
+        this.clean = fn();
+        this.hapiness = fn();
+        this.health = fn();
+        this.socialization = fn();
+        this.money = fn();
         this.displayNone()
         this.displayHeroes($fotoDog)
-        this.setInt(5)
+        this.setInt(5, 5)
+        this.setHelpInterval()
         this.moveBars()
         this.heroesMove($fotoDog)
     }
@@ -110,33 +186,70 @@ class LazyPug extends Tamagochi {
 }
 
 class FluffyKitty extends Tamagochi {
-    constructor(food, clean, hapiness) {
+    constructor(fn) {
         super()
-        this.food = food;
-        this.clean = clean;
-        this.hapiness = hapiness;
+        this.food = fn();
+        this.clean = fn();
+        this.hapiness = fn();
+        this.health = fn();
+        this.socialization = fn();
+        this.money = fn();
         this.displayNone()
         this.displayHeroes($fotoCat)
-        this.setInt(3)
+        this.setInt(3, 5)
+        this.setHelpInterval()
         this.moveBars()
         this.heroesMove($fotoCat)
     }
 
 }
 
-const startKitty = () => Math.round(50 + Math.random() * 50)
-const startPug = () => Math.round(50 + Math.random() * 20)
+
+class Ninja extends Tamagochi {
+    constructor(fn) {
+        super()
+        this.food = fn();
+        this.clean = fn();
+        this.hapiness = fn();
+        this.health = fn();
+        this.socialization = fn();
+        this.money = fn();
+        this.displayNone()
+        this.displayHeroes($fotoNinja)
+        this.setInt(7, 7)
+        this.setHelpInterval()
+        this.moveBars()
+        this.heroesMove($fotoNinja)
+    }
+
+}
+
+
+
 
 let newTam;
 $startKitty.addEventListener('click', () => {
-    newTam = new FluffyKitty(startKitty(), startKitty(), startKitty())
+    newTam = new FluffyKitty(startKitty)
+
 })
 
-$startPag.addEventListener('click',
-    () => newTam = new LazyPug(startPug(), startPug(), startPug()))
+$startPag.addEventListener('click', () => {
+    newTam = new LazyPug(startPug)
+})
+
+
+$startNinja.addEventListener('click', () => {
+    newTam = new Ninja(startPug)
+})
+
 
 
 
 $eatBtn.addEventListener('click', () => newTam.eat())
 $runBtn.addEventListener('click', () => newTam.run())
 $washBtn.addEventListener('click', () => newTam.wash())
+$doctorBtn.addEventListener('click', () => newTam.goDoctor())
+$barBtn.addEventListener('click', () => newTam.goBar())
+$workBtn.addEventListener('click', () => newTam.goWork())
+$shopBtn.addEventListener('click', () => newTam.byFood())
+$businessBtn.addEventListener('click', () => newTam.startBusiness())

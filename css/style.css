@@ -179,6 +179,7 @@ i {
     top: 14px;
     font-size: 15px;
     font-weight: bold;
+    cursor: default;
 }
 
 .startBtn {
@@ -195,4 +196,27 @@ i {
     top: 27px;
     left: 60px;
 
+}
+
+.restart {
+    display: none;
+    position: relative;
+}
+
+.restart .start {
+    margin: 40px auto;
+}
+
+.restart span {
+    top: 24px;
+}
+
+.restart .start::before {
+    content: '';
+    height: 2px;
+    width: 400px;
+    background-color: rgba(109, 109, 109, 0.57);
+    position: absolute;
+    top: -12px;
+    left: 60px;
 }

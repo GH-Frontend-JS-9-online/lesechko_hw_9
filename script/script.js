@@ -20,6 +20,11 @@ let $bars = document.querySelectorAll('.bars__progres');
 let $point = document.querySelector('.pointTittle')
 let $barsMain = document.querySelector('.bars')
 
+let $startBtn = document.querySelector('.startBtn')
+let $restartBtn = document.querySelector('.restart')
+
+
+
 
 const startKitty = () => Math.round(50 + Math.random() * 50)
 const startPug = () => Math.round(50 + Math.random() * 20)
@@ -230,18 +235,31 @@ class Ninja extends Tamagochi {
 let newTam;
 $startKitty.addEventListener('click', () => {
     newTam = new FluffyKitty(startKitty)
+    $startBtn.style.display = 'none';
+    $restartBtn.style.display = 'block';
+
+
 
 })
 
 $startPag.addEventListener('click', () => {
-    newTam = new LazyPug(startPug)
+    new LazyPug(startPug)
+    $startBtn.style.display = 'none';
+    $restartBtn.style.display = 'block';
 })
 
 
 $startNinja.addEventListener('click', () => {
     newTam = new Ninja(startPug)
+    $startBtn.style.display = 'none';
+    $restartBtn.style.display = 'block';
 })
 
+$restartBtn.addEventListener('click', () => {
+    document.location.reload(true);
+    $startBtn.style.display = 'none';
+    $restartBtn.style.display = 'block';
+})
 
 
 
